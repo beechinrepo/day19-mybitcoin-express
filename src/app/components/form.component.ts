@@ -24,7 +24,7 @@ export class FormComponent implements OnInit {
   btcAddress: ''
   };
   
-  todayDate = new Date();
+  todayDate = new Date(); //Tue Oct 15 2019 15:47:39 GMT+0800 (Singapore Standard Time)
   yearDate = new Date();
 
   bitcoin = {ask: 0, bid: 0};
