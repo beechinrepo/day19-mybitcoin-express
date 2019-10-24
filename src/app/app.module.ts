@@ -17,6 +17,7 @@ import { FormComponent } from './components/form.component';
 import { ConfirmComponent } from './components/confirm.component';
 import { BitcoinService } from './services/bitcoin.service';
 import { TransactService } from './services/transact.service';
+import { OrdersComponent } from './components/orders.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { TransactService } from './services/transact.service';
     AppComponent,
     FormComponent,
     ConfirmComponent,
+    OrdersComponent,
    ],
   imports: [
     BrowserModule,

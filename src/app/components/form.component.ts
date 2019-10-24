@@ -40,7 +40,7 @@ export class FormComponent implements OnInit {
       console.log(result); this.bitcoin = result; })
       .catch(
         () => { console.log('API Error'); 
-        this.bitcoin = {ask: 11500, bid: 11600}; }
+        this.bitcoin = {ask: 1700, bid: 11600}; }
     );
   }
 
@@ -76,6 +76,7 @@ export class FormComponent implements OnInit {
     if (this.transactForm.value.orderType === 'Sell') {
       this.transactForm.get('btcAddress').setValidators(null);
       this.transactForm.get('btcAddress').setErrors(null);
+      console.log('changed ordertype');
     }
   }
 
@@ -97,6 +98,7 @@ export class FormComponent implements OnInit {
       rate: this.rate,
       total: this.transactionAmount
     };
+    console.log(save);
     this.transSvc.saveCurrentTransaction(save);
     this.router.navigate(['/confirm']);
   }

@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   templateUrl: './confirm.component.html',
   styleUrls: ['./confirm.component.css']
 })
+
 export class ConfirmComponent implements OnInit {
 
   tr: any;
@@ -17,4 +18,9 @@ export class ConfirmComponent implements OnInit {
     this.tr = this.transSvc.getCurrentTransaction();
   }
 
+  viewAll() {
+    this.router.navigate(['/orders']);
+    console.log('viewall');
+  }
 }
+
