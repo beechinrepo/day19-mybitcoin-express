@@ -1,0 +1,36 @@
+<mat-list>
+    <a mat-list-item *ngFor="let order of btcOrders" (click)="navigateToEditOrder(order.id)">
+      <mat-icon svgIcon="btc" mat-list-icon></mat-icon>
+      <h4 mat-line>
+          <mat-chip-list *ngIf="order.orderType==='Buy'" aria-label="btc order type">
+              <mat-chip color="primary" selected>{{order.orderType}} SGD{{order.amt}}</mat-chip>
+          </mat-chip-list>
+          <mat-chip-list *ngIf="order.orderType==='Sell'" aria-label="btc order type">
+              <mat-chip color="accent" selected>{{order.orderType}} SGD{{order.amt}}</mat-chip>
+          </mat-chip-list>
+      </h4>
+      <p mat-line>&nbsp;</p>
+      <p mat-line> <b>Unit Price :</b> {{order.price}} 
+        <b>Quantity :</b> {{order.orderUnit}} </p>
+      <mat-divider></mat-divider>
+      </a>
+</mat-list>
+
+<!-- <div class="shade">
+    <div class="blackboard">
+        <div class="form" *ngFor= "let item of ord">
+            <table>
+            <tbody>
+                <tr>
+                    <mat-checkbox (click)="select()">
+                        <td>Order Type: </td><td class="info">{{ord.orderType}}</td>
+                        <td>Quantity: </td><td class="info">{{ord.unit}}}}</td>
+                        <td>Amount: </td><td class="info">{{ord.total}}</td>
+                    </mat-checkbox>
+                </tr>
+            </tbody>
+            </table>
+        </div><br>
+    </div>
+</div> -->
+        
