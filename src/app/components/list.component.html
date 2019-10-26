@@ -2,20 +2,25 @@
     <div class="blackboard">
         <mat-list>
             <a mat-list-item *ngFor="let order of list" (click)="navigateToEditOrder(order.id)">
-              <h4 mat-line>
-                  <mat-chip-list *ngIf="order.orderType==='Buy'" aria-label="btc order type">
-                      <mat-chip color="primary" selected>{{order.orderType}} SGD{{order.amt}}</mat-chip>
-                  </mat-chip-list>
-                  <mat-chip-list *ngIf="order.orderType==='Sell'" aria-label="btc order type">
-                      <mat-chip color="accent" selected>{{order.orderType}} SGD{{order.amt}}</mat-chip>
-                  </mat-chip-list>
-              </h4>
-              <p mat-line>&nbsp;</p>
-              <p mat-line> <b>Unit Price :</b> {{order.price}} 
-                <b>Quantity :</b> {{order.orderUnit}} </p>
-              <mat-divider></mat-divider>
-              </a>
+                <h4 mat-line>
+                    <p mat-line style="color:white">
+                        <b>Name :</b> {{order.name}}
+                        <b>unit:</b> {{order.unit}}
+                        <b>contact :</b> {{order.contact}}
+                        <b>rate :</b> {{order.rate}}
+                        <b>total :</b> {{order.total}}
+                    </p>
+                    <mat-chip-list *ngIf="order.orderType==='Buy'" aria-label="btc order type">
+                        <mat-chip color="primary" selected>{{order.orderType}} SGD{{order.amt}}</mat-chip>
+                    </mat-chip-list>
+                    <mat-chip-list *ngIf="order.orderType==='Sell'" aria-label="btc order type">
+                        <mat-chip color="accent" selected>{{order.orderType}} SGD{{order.amt}}</mat-chip>
+                    </mat-chip-list>
+                </h4>
+                <p mat-line>&nbsp;</p>
+
+                <mat-divider></mat-divider>
+            </a>
         </mat-list>
     </div>
 </div>
-        

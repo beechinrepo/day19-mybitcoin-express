@@ -10,15 +10,17 @@ import { ActivatedRoute } from '@angular/router';
 })
 
 export class ConfirmComponent implements OnInit {
-  tr: any;
+  confirmData: any;
   orderId: string;
 
   constructor(private transSvc: TransactService,
-              private activatedRoute: ActivatedRoute) {}
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.orderId = this.activatedRoute.snapshot.params.orderId;
-    this.tr = this.transSvc.getOrderDetails(this.orderId);
+    this.orderId = this.route.snapshot.params.orderId;
+    this.transSvc.getOrderDetails(this.orderId).then(response => {
+      this.confirmData = response;
+    });
   }
 }
 

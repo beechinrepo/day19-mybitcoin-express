@@ -26,25 +26,27 @@ export class FormComponent implements OnInit {
 
   rate = 0;
   transactionAmount = 0;
-  bitcoin = {ask: 0, bid: 0};
+  bitcoin = { ask: 0, bid: 0 };
 
   todayDate = new Date(); // Tue Oct 15 2019 15:47:39 GMT+0800 (Singapore Standard Time)
   yearDate = new Date();
-
+  selectedOrderId = "";
   constructor(private btcSvc: BitcoinService,
-              private transSvc: TransactService,
-              private router: Router,
-              private route: ActivatedRoute) {
+    private transSvc: TransactService,
+    private router: Router,
+    private route: ActivatedRoute) {
     this.transactForm = this.createFormGroup();
   }
-  
+
   ngOnInit() {
     this.yearDate.setFullYear(this.todayDate.getFullYear() - 21);
     this.btcSvc.getPrice()
-    .then((result) => {
-      console.log(result,"result");
-      this.bitcoin = result; })
-      .catch(error => { console.log(error);
+      .then((result) => {
+        console.log(result, "result");
+        this.bitcoin = result.BTCSGD;
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 
@@ -53,8 +55,8 @@ export class FormComponent implements OnInit {
   get f() { return this.transactForm.controls; }
 
   createFormGroup() {
-     return new FormGroup({
-    // transactForm: FormGroup = new FormGroup({
+    return new FormGroup({
+      // transactForm: FormGroup = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+')]),
       contact: new FormControl('', [Validators.required, Validators.pattern('^[8-9][0-9]{7}$')]),
       gender: new FormControl('', [Validators.required]),
@@ -68,9 +70,11 @@ export class FormComponent implements OnInit {
   }
 
   calculatePrice($event) {
+    console.log(this.bitcoin.ask, "this.bitcoin.ask")
     this.rate = (this.transactForm.value.orderType === 'Buy') ? this.bitcoin.ask : this.bitcoin.bid;
-    console.log(this.rate,"rate");
+    console.log(this.rate, "rate");
     this.transactionAmount = $event.target.value * this.rate;
+    console.log(this.transactionAmount, "am")
   }
 
   changeType(e) {
@@ -99,10 +103,14 @@ export class FormComponent implements OnInit {
       rate: this.rate,
       total: this.transactionAmount
     };
-    this.transSvc.saveCurrentTransaction(save);
-    // .toPromise()
-    // .then(result => {
-    //   console.log(result);
-    this.router.navigate(['/confirm']);
+    this.transSvc.saveCurrentTransaction(save).then(response => {
+      if (response != null) {
+        this.router.navigate(['/confirm/' + response.id]);
+      } else {
+        console.log("errror");
+      }
+
+    });
+
   }
 }

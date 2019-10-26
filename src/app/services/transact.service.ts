@@ -17,9 +17,9 @@ export class TransactService {
 
     this.currentTransaction = tran;
     return this.httpSvc.post<any>(this.btcApiURL, this.currentTransaction).toPromise()
-    .then (() => {
-      console.log('frontend service sending current transaction: ', this.currentTransaction);
-    });
+    // .then (() => {
+    //   console.log('frontend service sending current transaction: ', this.currentTransaction);
+    // });
   }
 
   public getList(): Promise<any> {

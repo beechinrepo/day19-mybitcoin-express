@@ -1,64 +1,64 @@
 require('dotenv').config(); // loads envt vars from .env file into process.env. 
 const express = require('express'),
-      bodyParser = require('body-parser'),
-      cors = require('cors'),
-      path = require('path');
-      uuidv1 = require('uuid/v1');
+    bodyParser = require('body-parser'),
+    cors = require('cors'),
+    path = require('path');
+uuidv1 = require('uuid/v1');
 const app = express();
-app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cors());
 
 const APP_PORT = process.env.PORT;
 const API_URL = '/api';
 const list = [];
 
-app.post(`${API_URL}/btc`, (req, res)=> {
+app.post(`${API_URL}/btc`, (req, res) => {
     let order = req.body;
-    if(typeof(order) !='undefined') {
+    if (typeof (order) != 'undefined') {
         order.id = uuidv1();
         list.push(order);
         res.status(200).json(order);
-        console.log('Posted order: ', order);
+        // console.log('Posted order: ', order);
     }
 });
 
-app.get(`${API_URL}/btc`, (req, res)=> {
+app.get(`${API_URL}/btc`, (req, res) => {
     let returnResult = [];
-    list.forEach((item)=>{
-        if(item) {
+    list.forEach((item) => {
+        if (item) {
             returnResult.push(item);
-        }  
+        }
     });
     res.status(200).json(returnResult);
-    console.log('Getting all transactions: ', returnResult);
-  });
+    // console.log('Getting all transactions: ', returnResult);
+});
 
-app.get(`${API_URL}/btc/:orderId`, (req,res)=> {
+app.get(`${API_URL}/btc/:orderId`, (req, res) => {
     let orderId = req.params.orderId;
-    let orderIdx = list.find(x=> {   // get value of 1st element
-        if(typeof(x) !== 'undefined') {
+    let orderIdx = list.find(x => {   // get value of 1st element
+        if (typeof (x) !== 'undefined') {
             return x.id == orderId;
         }
         return null;
     });
-    if(orderIdx){
+    if (orderIdx) {
         res.status(200).json(orderIdx);
-        console.log('Received selected order: ', orderIdx);
+        // console.log('Received selected order: ', orderIdx);
     }
 });
 
-app.put(`${API_URL}/btc`, (req,res)=> { // query:sort/filter; param:id specific resource(s)
+app.put(`${API_URL}/btc`, (req, res) => { // query:sort/filter; param:id specific resource(s)
     let orderId = req.query.orderId;
     let order = req.body;
-    const index = list.findIndex(y =>{
-        if(typeof(y) !== 'undefined'){
+    const index = list.findIndex(y => {
+        if (typeof (y) !== 'undefined') {
             return y.id == orderId;
         }
         return null;
     });
-    console.log(index);
+    // console.log(index);
     if (index === -1) {
-        res.status(500).json({error: 'error update'})
+        res.status(500).json({ error: 'error update' })
     } else {
         let ordertoUpdate = list[index];
         ordertoUpdate.name = order.name;
@@ -72,11 +72,11 @@ app.put(`${API_URL}/btc`, (req,res)=> { // query:sort/filter; param:id specific 
         ordertoUpdate.rate = order.rate;
         ordertoUpdate.total = order.total;
         res.status(200).json(ordertoUpdate);
-        console.log('Updated list: ', ordertoUpdate);
+        // console.log('Updated list: ', ordertoUpdate);
     };
 });
 
-app.get(`${API_URL}/price`, (req,res)=> {
+app.get(`${API_URL}/price`, (req, res) => {
     let priCurr = req.query.priCurr; //SGD
     let secCurr = req.query.secCurr; //BTC
     const PRICE_API_URL = process.env.PRICE_API_URL;
@@ -87,14 +87,14 @@ app.get(`${API_URL}/price`, (req,res)=> {
             'X-testing': 'testing'
         }
     };
-    request(options, (error, response, body)=>{
+    request(options, (error, response, body) => {
         if (!error && response.status == 200) {
             res.status(200).json(JSON.parse(body)); // JSON.parse() method parses a JSON string to construct a JS obj/value
         };
     });
 });
 
-app.listen(APP_PORT, ()=>{
+app.listen(APP_PORT, () => {
     console.log("App server started at " + APP_PORT);
 });
 
