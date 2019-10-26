@@ -3,7 +3,7 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       cors = require('cors'),
       path = require('path');
-
+      uuidv1 = require('uuid/v1');
 const app = express();
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(cors());
@@ -14,27 +14,28 @@ const list = [];
 
 app.post(`${API_URL}/btc`, (req, res)=> {
     let order = req.body;
-    console.log('Receiving order: ', order);
-    order.id = list.length++;
-    list.push(order);
-    res.status(200).json(list);
-    console.log('Saved order: ', list);
+    if(typeof(order) !='undefined') {
+        order.id = uuidv1();
+        list.push(order);
+        res.status(200).json(order);
+        console.log('Posted order: ', order);
+    }
 });
 
 app.get(`${API_URL}/btc`, (req, res)=> {
-    let getAll = [];
+    let returnResult = [];
     list.forEach((item)=>{
         if(item) {
-            getAll.push(item);
+            returnResult.push(item);
         }  
     });
-    res.status(200).json(getAll);
-    console.log('Getting all transactions: ', getAll);
+    res.status(200).json(returnResult);
+    console.log('Getting all transactions: ', returnResult);
   });
 
 app.get(`${API_URL}/btc/:orderId`, (req,res)=> {
     let orderId = req.params.orderId;
-    const orderIdx = list.find(x=> {   // get value of 1st element
+    let orderIdx = list.find(x=> {   // get value of 1st element
         if(typeof(x) !== 'undefined') {
             return x.id == orderId;
         }
@@ -46,9 +47,10 @@ app.get(`${API_URL}/btc/:orderId`, (req,res)=> {
     }
 });
 
-app.put(`${API_URL}/btc/:orderId`, (req,res)=> { // query:sort/filter; param:id specific resource(s)
-    let orderId = req.params.orderId;
-    const orderIdy = list.findIndex(y =>{
+app.put(`${API_URL}/btc`, (req,res)=> { // query:sort/filter; param:id specific resource(s)
+    let orderId = req.query.orderId;
+    let order = req.body;
+    const index = list.findIndex(y =>{
         if(typeof(y) !== 'undefined'){
             return y.id == orderId;
         }
@@ -58,32 +60,32 @@ app.put(`${API_URL}/btc/:orderId`, (req,res)=> { // query:sort/filter; param:id 
     if (index === -1) {
         res.status(500).json({error: 'error update'})
     } else {
-        let updatedlist = list[index];
-        updatedlist.name = list.name;
-        updatedlist.contact = list.contact;
-        updatedlist.gender = list.gender;
-        updatedlist.dob = list.dob;
-        updatedlist.orderDate = list.orderDate;
-        updatedlist.orderType = list.orderType;
-        updatedlist.unit = list.unit;
-        updatedlist.btcAddress = list.btcAddress;
-        updatedlist.rate = list.rate;
-        updatedlist.total = list.total;
-        res.status(200).json(updatedlist);
-        console.log('Updated list: ', updatedlist);
+        let ordertoUpdate = list[index];
+        ordertoUpdate.name = order.name;
+        ordertoUpdate.contact = order.contact;
+        ordertoUpdate.gender = order.gender;
+        ordertoUpdate.dob = order.dob;
+        ordertoUpdate.orderDate = order.orderDate;
+        ordertoUpdate.orderType = order.orderType;
+        ordertoUpdate.unit = order.unit;
+        ordertoUpdate.btcAddress = order.btcAddress;
+        ordertoUpdate.rate = order.rate;
+        ordertoUpdate.total = order.total;
+        res.status(200).json(ordertoUpdate);
+        console.log('Updated list: ', ordertoUpdate);
     };
 });
 
-app.get(`${API_URL}/btc/price`, (req,res)=> {
-    let priCurr = req.query.priCurr;
-    let secCurr = req.query.secCurr;
+app.get(`${API_URL}/price`, (req,res)=> {
+    let priCurr = req.query.priCurr; //SGD
+    let secCurr = req.query.secCurr; //BTC
     const PRICE_API_URL = process.env.PRICE_API_URL;
     const options = {
-        url: `${PRICE_API_URL}${priCurr},${secCurr}`,
+        url: `${PRICE_API_URL}${"SGD"},${"BTC"}`,
         headers: {
             'Accept': 'application/json',
             'X-testing': 'testing'
-        };
+        }
     };
     request(options, (error, response, body)=>{
         if (!error && response.status == 200) {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BitcoinService } from '../services/bitcoin.service';
+import { TransactService } from '../services/transact.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,18 +8,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
-  btcOrders = [];
-  constructor(private bitcoinSvc: BitcoinService) { 
-  }
+  list = [];
+  constructor(private transactSvc: TransactService, private router: Router) {}
 
   ngOnInit() {
-    this.bitcoinSvc.getOrderList().then(result=>{
-      console.log(result);
-      this.btcOrders= result;
-    })
+    this.transactSvc.getList().then(all => {
+      this.list = all;
+      console.log('list: ', all);
+    });
   }
 
   navigateToEditOrder(orderId) {
-    this.Router.navigate(['/edit/'+ orderId]);
+    this.router.navigate(['/edit/' + orderId]);
   }
 }

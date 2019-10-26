@@ -8,18 +8,12 @@ import { environment } from '../../environments/environment';
 export class BitcoinService {
 
   constructor(private httpSvc: HttpClient) {}
-  backendApiURL = environment.api_url;  // 'http://localhost:3000'
-  btcApiURL = `${this.backendApiURL}/btc`;
+  backendApiURL = environment.api_url;  // 'http://localhost:3000/api'
   btcPriceApiURL = `${this.backendApiURL}/price`;
-
-  
 
   public getPrice(): Promise<any> { // public: talk w backend
     return (
-      this.httpSvc.get(this.btcPriceApiURL).toPromise()
+      this.httpSvc.get(`${this.btcPriceApiURL}?priCurr=SGD&secCurr=BTC`).toPromise()
     );
   }
-
-
-
 }

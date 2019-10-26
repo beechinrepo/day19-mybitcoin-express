@@ -1,8 +1,9 @@
-import { Component, OnInit, Directive } from '@angular/core';
-import { NgForm} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BitcoinService } from '../services/bitcoin.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Order } from '../models/order';
+import { Router } from '@angular/router';
+import { Order } from '../models/transact';
+import { TransactService } from '../services/transact.service';
 
 @Component({
   selector: 'app-edit',
@@ -10,103 +11,89 @@ import { Order } from '../models/order';
   styleUrls: ['./edit.component.css']
 })
 export class EditComponent implements OnInit {
-  order :Order;
-  orderTypeDefault = "buy";
-  validAge = true;
-  genderField: string;
-  genderList: string[] = ['Male', 'Female'];
-  orderId: string;
-  gender: string;
-  myAmt:string = '0.00';
-  buy = true;
-  myPrice = 0;
-  tomorrow= new Date();
+  transactForm: FormGroup;
+  model: Order = {
+    name: '',
+    contact: '',
+    gender: '',
+    dob: '',
+    orderDate: '',
+    orderType: '',
+    unit: null,
+    btcAddress: ''
+  };
+  todayDate = new Date(); // Tue Oct 15 2019 15:47:39 GMT+0800 (Singapore Standard Time)
+  yearDate = new Date();
 
-  constructor(private bitcoinSvc: BitcoinService, private activatedRoute: ActivatedRoute, 
-    private router: Router) { }
+  bitcoin = {ask: 0, bid: 0};
+  rate = 0;
+  transactionAmount = 0;
+
+  constructor(private formBuilder: FormBuilder, private btcSvc: BitcoinService, private transSvc: TransactService, private router: Router) {
+    this.transactForm = this.createFormGroup();
+
+    this.btcSvc.getPrice().then((result) => {
+      console.log(result); this.bitcoin = result; })
+      .catch(
+        () => { console.log('API Error'); this.bitcoin = {ask: 1700, bid: 11600}; }
+    );
+  }
 
   ngOnInit() {
-    this.orderId = this.activatedRoute.snapshot.params.orderId;
-    this.bitcoinSvc.getPrice()
-    .then(result => {
-      this.myPrice = result.BTCSGD.ask; //initial load will get ask because default order type is buy
+    this.yearDate.setFullYear(this.todayDate.getFullYear() - 21);
+  }
+
+  // convenience getter for easy access to form fields
+  get f() { return this.transactForm.controls; }
+
+  createFormGroup() {
+     return new FormGroup({
+    // transactForm: FormGroup = new FormGroup({
+      name: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+')]),
+      contact: new FormControl('', [Validators.required, Validators.pattern('^[8-9][0-9]{7}$')]),
+      gender: new FormControl('', [Validators.required]),
+      dob: new FormControl('', [Validators.required]),
+      orderDate: new FormControl('', [Validators.required]),
+      orderType: new FormControl('Buy', [Validators.required]),
+      unit: new FormControl('', [Validators.required]),  // *:multiple occurence of preceding. $:end. ^:bgn. Validators.pattern('^[0-9]*$'
+      btcAddress: new FormControl('', [Validators.required]),
+      // email: new FormControl('', [Validators.required, Validators.email]),
     })
-    .catch(error=>{
-      console.log(error);
-    });
-
-    this.bitcoinSvc.getOrderDetails(this.orderId).then(result=>{
-      this.order = result;
-      this.orderTypeDefault = result.orderType;
-      this.gender = result.gender;
-      console.log(result.orderType);
-      console.log(result.orderUnit);
-      
-      this.recalcMyAmt(result.orderType, result.orderUnit);
-    });
   }
 
-  processForm(f:NgForm){
-    this.bitcoinSvc.updateOrderDetails(this.orderId, f.value).then(result=>{
-      console.log(result);
-      this.router.navigate(['/confirm', this.orderId]);
-    });
-    
+  calculatePrice($event) {
+    this.rate = (this.transactForm.value.orderType === 'Buy') ? this.bitcoin.ask : this.bitcoin.bid;
+    this.transactionAmount = $event.target.value * this.rate;
   }
 
-  checkAgeValid(dob){
-    let myDob = new Date (dob);
-    var ageDifMs = Date.now() - myDob.getTime();
-    var ageDate = new Date(ageDifMs); // miliseconds from epoch
-    let myAge = Math.abs(ageDate.getUTCFullYear() - 1970);
-    console.log("myAge=" , myAge);
-    if (myAge<21){
-      this.validAge = false;
-    }
-    else{
-      this.validAge = true;
-    }
-    console.log(this.validAge);
-  }
-  
-  checkBuyOrSell(f: string){
-    console.log("f=", f);
-    if (f == "Buy"){
-      this.buy = true;
-    }
-    else if (f == "Sell"){
-      this.buy = false;
+  changeType(e) {
+    if (this.transactForm.value.orderType === 'Sell') {
+      this.transactForm.get('btcAddress').setValidators(null);
+      this.transactForm.get('btcAddress').setErrors(null);
+      console.log('changed ordertype');
     }
   }
 
-  recalcMyAmt(buyOrSell, unit:number){
-    console.log("buyOrSell =", buyOrSell);
-    this.bitcoinSvc.getPrice()
-    .then(result => {
-      console.log(result);
-      if (buyOrSell == "Buy"){
-        this.myPrice = result.BTCSGD.ask;
-      }
-      else if (buyOrSell == "Sell"){
-        this.myPrice = result.BTCSGD.bid;
-      }
-      else {
-        this.myPrice = 0;
-      }
-      console.log("recalculating myAmt " + this.myPrice);
-      if ( isNaN(unit) || isNaN(this.myPrice) ){
-        this.myAmt = '0.00';     
-      }
-      else {
-        let sum = unit*this.myPrice;
-        this.myAmt = sum.toFixed(2);
-      }
-      console.log(this.myAmt);
-    })
-    .catch(error=>{
-      console.log(error);
-    });
+  cancel() {
+    this.router.navigate(['']);
   }
 
-
+  onSubmit() {
+    const val = this.transactForm.value;
+    const save: Order = {
+      name: val.name,
+      contact: val.contact,
+      gender: val.gender,
+      dob: val.dob,
+      orderDate: val.orderDate,
+      orderType: val.orderType,
+      unit: val.unit,
+      btcAddress: (val.orderType === 'Buy') ? val.btcAddress : null,
+      rate: this.rate,
+      total: this.transactionAmount
+    };
+    console.log(save);
+    this.transSvc.saveCurrentTransaction(save);
+    this.router.navigate(['/confirm']);
+  }
 }

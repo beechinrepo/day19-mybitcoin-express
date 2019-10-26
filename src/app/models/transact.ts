@@ -1,12 +1,14 @@
-export interface Itransaction {
-    name: string;
-    contact: string;
-    gender: string;
-    dob: string;
-    orderDate: string;
-    orderType: string;
-    unit: number;
-    btcAddress: string;
-    rate?: number;
-    total?: number;
+export class Order {
+    constructor(
+        public name: string,
+        public contact: string,
+        public gender: string,
+        public dob: string,
+        public orderDate: string,
+        public orderType: string,
+        public unit: number,
+        public btcAddress: string,
+        public rate?: number,
+        public total?: number,
+        public id?: number) {}
 }

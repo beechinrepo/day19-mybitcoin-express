@@ -2,14 +2,14 @@
 <div class="shade">
     <div class="blackboard">
         <div class="form">
-        <form [formGroup]="transactForm" (ngSubmit)="onSubmit()" method="POST" action="/orders">
+        <form [formGroup]="transactForm" (ngSubmit)="onSubmit()">
         <!-- <h2 class="center">Bitcoin Transaction Request</h2> -->
     
         <mat-form-field class="p">
             <mat-label>Name: </mat-label>
             <input matInput formControlName="name" placeholder="Name">
-            <mat-hint *ngIf=" transactForm.touched && f.name.errors?.required"> Name is required.</mat-hint>
-            <mat-error *ngIf="transactForm.touched && f.name.invalid">Please enter only alphabets</mat-error>
+            <mat-hint *ngIf=" transactForm.touched && !!f.name.errors?.required"> Name is required.</mat-hint>
+            <mat-error *ngIf="transactForm.touched && !!f.name.invalid">Please enter only alphabets</mat-error>
         </mat-form-field><br>
 
     
@@ -17,8 +17,8 @@
             <mat-label>Contact: </mat-label>
             <input matInput placeholder="Contact No." formControlName="contact">
             <span matSuffix>(+65)&nbsp;</span>
-            <mat-hint *ngIf="transactForm.touched && f.contact.errors?.required">Please input a Contact No.</mat-hint>
-            <mat-error *ngIf="transactForm.touched && f.contact.invalid">Please enter a valid Singapore Mobile Number</mat-error>
+            <mat-hint *ngIf="transactForm.touched && !!f.contact.errors?.required">Please input a Contact No.</mat-hint>
+            <mat-error *ngIf="transactForm.touched && !!f.contact.invalid">Please enter a valid Singapore Mobile Number</mat-error>
         </mat-form-field><br>
     
         <div class="p">
@@ -26,7 +26,7 @@
             <mat-radio-group name="gender" id="gender" formControlName="gender" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="5vw"> 
                 <mat-radio-button value="Male">Male</mat-radio-button>
                 <mat-radio-button value="Female">Female</mat-radio-button>
-                <mat-hint *ngIf="transactForm.touched && f.gender.errors?.required">Please input a Gender</mat-hint>
+                <mat-hint *ngIf="transactForm.touched && !!f.gender.errors?.required">Please input a Gender</mat-hint>
             </mat-radio-group>
         </div><br>
     
@@ -36,8 +36,8 @@
             touchUi="true" readonly>
             <mat-datepicker-toggle matSuffix [for]="dob"></mat-datepicker-toggle>
             <mat-datepicker #dob></mat-datepicker>
-            <mat-hint *ngIf="transactForm.touched && f.dob.errors?.required">Please input a Date of Birth</mat-hint>
-            <mat-error *ngIf="transactForm.touched && f.dob.invalid">Age must be at least 21</mat-error>
+            <mat-hint *ngIf="transactForm.touched && !!f.dob.errors?.required">Please input a Date of Birth</mat-hint>
+            <mat-error *ngIf="transactForm.touched && !!f.dob.invalid">Age must be at least 21</mat-error>
         </mat-form-field><br>
 
         <mat-form-field class="p">
@@ -46,8 +46,8 @@
             touchUi="true" readonly>
             <mat-datepicker-toggle matSuffix [for]="orderDate"></mat-datepicker-toggle>
             <mat-datepicker #orderDate></mat-datepicker>
-            <mat-hint *ngIf="transactForm.touched && f.orderDate.errors?.required">Please input an Order Date</mat-hint>
-            <mat-error *ngIf="transactForm.touched && f.orderDate.invalid">It cannot be the past</mat-error>
+            <mat-hint *ngIf="transactForm.touched && !!f.orderDate.errors?.required">Please input an Order Date</mat-hint>
+            <mat-error *ngIf="transactForm.touched && !!f.orderDate.invalid">It cannot be the past</mat-error>
         </mat-form-field><br>
 
         <h2 class="center p">Select Bitcoin Transaction Type: {{transactForm.value.orderType | uppercase }} <br></h2>
@@ -62,8 +62,8 @@
                 <mat-label>Units to Transact: </mat-label>
                 <input type="number" min="1" matInput oninput="this.value = Math.abs(this.value)" placeholder="Units to Transact" (keyup)="calculatePrice($event)" formControlName="unit"> 
                 <span matSuffix>BTC&nbsp;</span>
-                <mat-hint *ngIf="transactForm.touched && f.unit.errors?.required">Please input number of units of Bitcoin</mat-hint>
-                <mat-error *ngIf="transactForm.touched && f.unit.invalid">Please input a valid number</mat-error>     
+                <mat-hint *ngIf="transactForm.touched && !!f.unit.errors?.required">Please input number of units of Bitcoin</mat-hint>
+                <mat-error *ngIf="transactForm.touched && !!f.unit.invalid">Please input a valid number</mat-error>     
             </mat-form-field><br>
 
             <div *ngIf="transactForm.value.orderType === 'Buy'">
@@ -93,7 +93,7 @@
             <mat-form-field class="p">
                 <mat-label>Bitcoin Address: </mat-label>
                 <input class="input" matInput placeholder="Bitcoin Address" formControlName="btcAddress">
-                <mat-hint *ngIf="transactForm.touched && f.btcAddress.errors?.required">Please input a Bitcoin Address.</mat-hint>
+                <mat-hint *ngIf="transactForm.touched && !!f.btcAddress.errors?.required">Please input a Bitcoin Address.</mat-hint>
             </mat-form-field>
         </div><br>
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TransactService } from '../services/transact.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+// import { Order } from '../models/transact';
 
 @Component({
   selector: 'app-confirm',
@@ -9,18 +10,15 @@ import { Router } from '@angular/router';
 })
 
 export class ConfirmComponent implements OnInit {
-
   tr: any;
+  orderId: string;
 
-  constructor(private transSvc: TransactService, private router: Router) { }
+  constructor(private transSvc: TransactService,
+              private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.tr = this.transSvc.getCurrentTransaction();
-  }
-
-  viewAll() {
-    this.router.navigate(['/orders']);
-    console.log('viewall');
+    this.orderId = this.activatedRoute.snapshot.params.orderId;
+    this.tr = this.transSvc.getOrderDetails(this.orderId);
   }
 }
 

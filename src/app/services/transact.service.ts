@@ -1,38 +1,39 @@
 import { Injectable } from '@angular/core';
-import { Itransaction } from '../models/transact';
+import { Order } from '../models/transact';
 import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactService {
-  currentTransaction: Itransaction;
-  allTransactions: Itransaction;
+  currentTransaction: Order;
 
   constructor(private httpSvc: HttpClient) { }
+  backendApiURL = environment.api_url;  // 'http://localhost:3000/api'
+  btcApiURL = `${this.backendApiURL}/btc`;
 
-  saveCurrentTransaction(tran: Itransaction) {
+  public saveCurrentTransaction(tran: Order) {
+
     this.currentTransaction = tran;
-    console.log(this.currentTransaction);
-
-    const httpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
-    this.httpSvc.post('http://localhost:3000/api/btc', JSON.stringify(this.currentTransaction), {
-      headers: httpHeaders
-    })
-    .subscribe(data => {
-      console.log(data);
+    return this.httpSvc.post<any>(this.btcApiURL, this.currentTransaction).toPromise()
+    .then (() => {
+      console.log('frontend service sending current transaction: ', this.currentTransaction);
     });
   }
 
-  getCurrentTransaction(): Itransaction {
-    return this.currentTransaction;
+  public getList(): Promise<any> {
+    return this.httpSvc.get<any>(this.btcApiURL).toPromise();
   }
 
-  getAllTransactions() {
-    const httpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.httpSvc.get('http://localhost:3000/api/btc',{headers: httpHeaders})
-    .subscribe(data => {
-      console.log(data);
-    });
+  public getOrderDetails(orderId): Promise<Order> {
+    return this.httpSvc.get<Order>(this.btcApiURL + '/' + orderId).toPromise();
+  }
+  // getCurrentTransaction(): Order {
+  //   return this.currentTransaction;
+  // }
+
+  public updateOrderDetails(orderId, order): Promise<any> {
+    return this.httpSvc.put<any>(this.btcApiURL + '?orderId=' + orderId, order).toPromise();
   }
 }

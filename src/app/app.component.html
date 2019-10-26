@@ -5,10 +5,17 @@
 <div class="cover">
   <div class="w3-top">
     <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
-      <!-- <img src="assets/bitcoin.jpg" height="50vh"> -->
       <div class="w3-bar-item w3-button">BitCoin Exchange</div>
+      <span class="example-spacer"></span>
+      <span> &nbsp;</span>
+      <button mat-raised-button color="primary" (click)="buyBtc()">
+          Buy
+      </button>
+      <span> &nbsp;</span>
+      <button mat-raised-button color="accent" (click)="sellBtc()">
+          Sell
+      </button>
     </div>
   </div>
 </div>
 <router-outlet></router-outlet>
-
