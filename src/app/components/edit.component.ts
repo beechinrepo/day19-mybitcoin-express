@@ -98,12 +98,9 @@ export class EditComponent implements OnInit {
   }
 
   changeType() {
-    if (this.transactForm.value.orderType === 'Sell') {
-      this.transactForm.get('btcAddress').setValidators(null);
-      this.transactForm.get('btcAddress').setErrors(null);
-      console.log('changed ordertype');
+      this.rate = (this.transactForm.value.orderType === 'Buy') ? this.bitcoin.ask : this.bitcoin.bid;
+      this.transactionAmount = this.transactForm.value.unit * this.rate;
     }
-  }
 
   cancel() {
     this.router.navigate(['']);
