@@ -15,9 +15,9 @@ script:
   - ng build --prod --base-href https://carine18.github.io/mybitcoin
  
  notifications:  
-  email:  
-    recipients:  
-    - carinengbeechin@gmail.com 
+  # email:  
+  #   recipients:  
+  #   - carinengbeechin@gmail.com 
     on_success: always  
     on_failure: always
  
