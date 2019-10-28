@@ -16,6 +16,7 @@ export class BitcoinService {
       // this.httpSvc.get(`${this.btcPriceApiURL}?priCurr=SGD&secCurr=BTC`).toPromise()
       // Checked at ARC tt backend(localhost:3000/api/price?primaryCurry=SGD) works, but can't work for frontend
       this.httpSvc.get(`https://radiant-dawn-95135.herokuapp.com/api/price?primaryCurry=SGD`).toPromise()
+      // this.httpSvc.get(`${this.btcPriceApiURL}?primaryCurry=SGD`).toPromise()
     );
   }
 }

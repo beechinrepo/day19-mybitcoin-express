@@ -10,9 +10,10 @@ app.use(cors());
 
 const APP_PORT = process.env.PORT;
 const API_URL = '/api';
+// const API_URL = 'https://radiant-dawn-95135.herokuapp.com/api'
 const list = [];
 
-app.post(`${API_URL}/btc`, (req, res) => {
+app.post(`${API_URL}/bitcoin`, (req, res) => {
     let order = req.body;
     if (typeof (order) != 'undefined') {
         order.id = uuidv1();
@@ -26,7 +27,7 @@ app.post(`${API_URL}/btc`, (req, res) => {
     }
 });
 
-app.get(`${API_URL}/btc`, (req, res) => {
+app.get(`${API_URL}/bitcoin`, (req, res) => {
     let returnResult = [];
     list.forEach((item) => {
         if (item) {
@@ -37,7 +38,7 @@ app.get(`${API_URL}/btc`, (req, res) => {
     // console.log('Getting all transactions: ', returnResult);
   });
 
-app.get(`${API_URL}/btc/:orderId`, (req, res) => {
+app.get(`${API_URL}/bitcoin/:orderId`, (req, res) => {
     let orderId = req.params.orderId;
     let orderIdx = list.find(x => {   // get value of 1st element
         if (typeof (x) !== 'undefined') {
@@ -51,7 +52,7 @@ app.get(`${API_URL}/btc/:orderId`, (req, res) => {
     }
 });
 
-app.delete(`${API_URL}/btc/:orderId`, (req, res) => {
+app.delete(`${API_URL}/bitcoin/:orderId`, (req, res) => {
     const orderId = req.params.orderId;
     let index = list.findIndex(order => order.id === orderId);
     if (index < 0) {
@@ -62,7 +63,7 @@ app.delete(`${API_URL}/btc/:orderId`, (req, res) => {
     }
 });
 
-app.put(`${API_URL}/btc`, (req, res) => { // query:sort/filter; param:id specific resource(s)
+app.put(`${API_URL}/bitcoin`, (req, res) => { // query:sort/filter; param:id specific resource(s)
     let orderId = req.query.orderId;
     let order = req.body;
     const index = list.findIndex(y => {

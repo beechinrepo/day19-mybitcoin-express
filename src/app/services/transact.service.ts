@@ -10,8 +10,8 @@ export class TransactService {
   currentTransaction: Order;
 
   constructor(private httpSvc: HttpClient) { }
-  backendApiURL = environment.api_url;  // 'http://localhost:3000/api'
-  btcApiURL = `${this.backendApiURL}/btc`;
+  backendApiURL = environment.api_url;  // 'http://localhost:3000/api''https://radiant-dawn-95135.herokuapp.com/api'
+  btcApiURL = `${this.backendApiURL}/bitcoin`;
 
   public saveCurrentTransaction(tran: Order) {
 
