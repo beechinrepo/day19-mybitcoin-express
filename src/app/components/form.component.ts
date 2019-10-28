@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, RequiredValidator } from '@angular/forms';
 import { Order } from '../models/transact';
 import { BitcoinService } from '../services/bitcoin.service';
 import { TransactService } from '../services/transact.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-form',
@@ -21,13 +21,14 @@ export class FormComponent implements OnInit {
     orderType: '',
     unit: null,
     btcAddress: '',
-    id: 0
+    rate: 0, // added
+    total: 0 // added
   };
 
   rate = 0;
   transactionAmount = 0;
-  bitcoin = {ask: 0, bid: 0};
-
+  bitcoin = { ask: 0, bid: 0 };
+  selectedOrderId = ''; // added
   todayDate = new Date(); // Tue Oct 15 2019 15:47:39 GMT+0800 (Singapore Standard Time)
   yearDate = new Date();
 
@@ -37,17 +38,27 @@ export class FormComponent implements OnInit {
               private route: ActivatedRoute) {
     this.transactForm = this.createFormGroup();
   }
-  
   ngOnInit() {
+    this.model.orderType = this.route.snapshot.paramMap.get('orderType');  // i edited
+    console.log(this.model.orderType);
+    if (this.model.orderType === 'Sell') {
+      this.transactForm.get('btcAddress').setValidators(null);
+      this.transactForm.get('btcAddress').setErrors(null);
+    } else {
+      this.transactForm.get('btcAddress').setValidators(Validators.required);
+    }
+
     this.yearDate.setFullYear(this.todayDate.getFullYear() - 21);
+
     this.btcSvc.getPrice()
     .then((result) => {
-      console.log(result,"result");
-      this.bitcoin = result; })
-      .catch(error => { console.log(error);
+      console.log(result, 'result');
+      this.bitcoin = result.BTCSGD; // added .BTCSGD
+    })
+    .catch(error => {
+      console.log(error);
       });
   }
-
 
   // convenience getter for easy access to form fields
   get f() { return this.transactForm.controls; }
@@ -55,30 +66,27 @@ export class FormComponent implements OnInit {
   createFormGroup() {
      return new FormGroup({
     // transactForm: FormGroup = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+')]),
-      contact: new FormControl('', [Validators.required, Validators.pattern('^[8-9][0-9]{7}$')]),
-      gender: new FormControl('', [Validators.required]),
-      dob: new FormControl('', [Validators.required]),
-      orderDate: new FormControl('', [Validators.required]),
-      orderType: new FormControl('Buy', [Validators.required]),
-      unit: new FormControl('', [Validators.required]),  // *:multiple occurence of preceding. $:end. ^:bgn. Validators.pattern('^[0-9]*$'
-      btcAddress: new FormControl('', [Validators.required]),
-      // email: new FormControl('', [Validators.required, Validators.email]),
-    })
+    //  changed all from '' to e.g. model.name
+    name: new FormControl(this.model.name, [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+')]), 
+    contact: new FormControl(this.model.contact, [Validators.required, Validators.pattern('^[8-9][0-9]{7}$')]),
+    gender: new FormControl(this.model.gender, [Validators.required]),
+    dob: new FormControl(this.model.dob, [Validators.required]),
+    orderDate: new FormControl(this.model.orderDate, [Validators.required]),
+    // orderType: new FormControl(this.model.orderType, [Validators.required]),
+    unit: new FormControl(this.model.unit, [Validators.required]),
+    btcAddress: new FormControl(this.model.btcAddress, [Validators.required])
+    });
+    // *:multiple occurence of preceding. $:end. ^:bgn. Validators.pattern('^[0-9]*$'
+    // email: new FormControl('', [Validators.required, Validators.email]),
   }
 
   calculatePrice($event) {
-    this.rate = (this.transactForm.value.orderType === 'Buy') ? this.bitcoin.ask : this.bitcoin.bid;
-    console.log(this.rate,"rate");
+    console.log(this.bitcoin.ask, 'this.bitcoin.ask'); // added
+    console.log(this.bitcoin.ask, 'this.bitcoin.bid'); // added
+    this.rate = (this.model.orderType === 'Buy') ? this.bitcoin.ask : this.bitcoin.bid;
+    console.log(this.rate, 'rate');
     this.transactionAmount = $event.target.value * this.rate;
-  }
-
-  changeType(e) {
-    if (this.transactForm.value.orderType === 'Sell') {
-      this.transactForm.get('btcAddress').setValidators(null);
-      this.transactForm.get('btcAddress').setErrors(null);
-      console.log('changed ordertype');
-    }
+    console.log(this.transactionAmount, 'amt'); // added
   }
 
   cancel() {
@@ -93,16 +101,27 @@ export class FormComponent implements OnInit {
       gender: val.gender,
       dob: val.dob,
       orderDate: val.orderDate,
-      orderType: val.orderType,
+      orderType: this.model.orderType,
       unit: val.unit,
-      btcAddress: (val.orderType === 'Buy') ? val.btcAddress : null,
+      btcAddress: (this.model.orderType === 'Buy') ? val.btcAddress : null,
       rate: this.rate,
       total: this.transactionAmount
     };
-    this.transSvc.saveCurrentTransaction(save);
-    // .toPromise()
-    // .then(result => {
-    //   console.log(result);
-    this.router.navigate(['/confirm']);
+    // added- .then: for void type must acct for null
+    // response.id: can't put .then at srvs, nd to wait for promise to return from srvs then handle response from here
+    this.transSvc.saveCurrentTransaction(save).then(response => {
+      if (response != null) {
+        this.router.navigate(['/confirm/' + response.id]);
+        console.log(typeof(save.orderType));
+        console.log(save.orderType);
+      } else {
+        console.log('error');
+      }
+    });
+    // this.transSvc.saveCurrentTransaction(save);
+    // // .toPromise()
+    // // .then(result => {
+    // //   console.log(result);
+    // this.router.navigate(['/confirm']);
   }
 }

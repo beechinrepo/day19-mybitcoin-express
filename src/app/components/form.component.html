@@ -7,7 +7,7 @@
     
         <mat-form-field class="p">
             <mat-label>Name: </mat-label>
-            <input matInput formControlName="name" placeholder="Name">
+            <input matInput formControlName="name" > <!--placeholder="Name"-->
             <mat-hint *ngIf=" transactForm.touched && !!f.name.errors?.required"> Name is required.</mat-hint>
             <mat-error *ngIf="transactForm.touched && !!f.name.invalid">Please enter only alphabets</mat-error>
         </mat-form-field><br>
@@ -15,7 +15,7 @@
     
         <mat-form-field class="p">
             <mat-label>Contact: </mat-label>
-            <input matInput placeholder="Contact No." formControlName="contact">
+            <input matInput formControlName="contact"> <!--placeholder="Contact No."-->
             <span matSuffix>(+65)&nbsp;</span>
             <mat-hint *ngIf="transactForm.touched && !!f.contact.errors?.required">Please input a Contact No.</mat-hint>
             <mat-error *ngIf="transactForm.touched && !!f.contact.invalid">Please enter a valid Singapore Mobile Number</mat-error>
@@ -50,13 +50,15 @@
             <mat-error *ngIf="transactForm.touched && !!f.orderDate.invalid">It cannot be the past</mat-error>
         </mat-form-field><br>
 
-        <h2 class="center p">Select Bitcoin Transaction Type: {{transactForm.value.orderType | uppercase }} <br></h2>
+        <!-- <h2 class="center p">Select Bitcoin Transaction Type: {{transactForm.value.orderType | uppercase }} <br></h2>
         <div class="center">
         <mat-button-toggle-group formControlName="orderType" (change)="changeType($event)"> 
             <mat-button-toggle value="Buy" class="submit-button" aria-label="Buy">Buy</mat-button-toggle>
             <mat-button-toggle value="Sell" class="submit-button" aria-label="Sell">Sell</mat-button-toggle>
         </mat-button-toggle-group>
-        </div><br>
+        </div><br> -->
+        <h2 class="center p">Bitcoin Transaction Type: {{this.model.orderType | uppercase }} <br></h2>
+        <br>
 
             <mat-form-field class="p" appearance="fill">
                 <mat-label>Units to Transact: </mat-label>
@@ -66,7 +68,7 @@
                 <mat-error *ngIf="transactForm.touched && !!f.unit.invalid">Please input a valid number</mat-error>     
             </mat-form-field><br>
 
-            <div *ngIf="transactForm.value.orderType === 'Buy'">
+            <div *ngIf="this.model.orderType === 'Buy'">
                 <mat-form-field class="p" appearance="fill">
                     <mat-label>Buying Rate: </mat-label>
                     <input class="input" matInput disabled=true value="{{bitcoin.ask | number: '.2'}}"> 
@@ -74,7 +76,7 @@
                 </mat-form-field>
             </div><br>
 
-            <div *ngIf="transactForm.value.orderType === 'Sell'">
+            <div *ngIf="this.model.orderType === 'Sell'">
                 <mat-form-field class="p" appearance="fill">
                     <mat-label>Selling Rate: </mat-label>
                     <input class="input" matInput disabled=true value="{{bitcoin.bid | number: '.2'}}"> 
@@ -89,7 +91,7 @@
             <span matSuffix>SGD&nbsp;</span>
         </mat-form-field><br>
 
-        <div *ngIf="transactForm.value.orderType === 'Buy'">
+        <div *ngIf="this.model.orderType === 'Buy'">
             <mat-form-field class="p">
                 <mat-label>Bitcoin Address: </mat-label>
                 <input class="input" matInput placeholder="Bitcoin Address" formControlName="btcAddress">
@@ -97,7 +99,7 @@
             </mat-form-field>
         </div><br>
 
-        <div class="center, p" *ngIf="transactForm.value.orderType === 'Sell'">
+        <div class="center, p" *ngIf="this.model.orderType === 'Sell'">
             <h4>Please scan the below QR Code with PayNow.</h4>
             <img src = "assets/qrcode.png" width="150px">
         </div><br>

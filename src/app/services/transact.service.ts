@@ -16,10 +16,10 @@ export class TransactService {
   public saveCurrentTransaction(tran: Order) {
 
     this.currentTransaction = tran;
-    return this.httpSvc.post<any>(this.btcApiURL, this.currentTransaction).toPromise()
-    .then (() => {
-      console.log('frontend service sending current transaction: ', this.currentTransaction);
-    });
+    return this.httpSvc.post<any>(this.btcApiURL, this.currentTransaction).toPromise();
+    // can't put here - .then (() => {
+    //   console.log('frontend service sending current transaction: ', this.currentTransaction);
+    // });
   }
 
   public getList(): Promise<any> {
@@ -35,5 +35,9 @@ export class TransactService {
 
   public updateOrderDetails(orderId, order): Promise<any> {
     return this.httpSvc.put<any>(this.btcApiURL + '?orderId=' + orderId, order).toPromise();
+  }
+
+  public deleteOrder(orderId): Promise<any> {
+    return this.httpSvc.delete<any>(this.btcApiURL + '/' + orderId).toPromise();
   }
 }

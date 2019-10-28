@@ -1,18 +1,17 @@
 .shade {
     overflow: fixed;
     position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    width: 100vw;
+    height: auto;
     /* background-image: linear-gradient( 150deg, rgba(0, 0, 0, 0.65), transparent); */
     font-size: 1.2em;
-
+    overflow-wrap: normal;
 }
 
 .blackboard {
     position: relative;
-    width: 800px;
+    width: 95vw;
+    height: auto;
     margin: 7% auto;
     border: tan solid 12px;
     border-top: #bda27e solid 12px;
@@ -27,11 +26,11 @@
     box-sizing: border-box;
     display: block;
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 95vw;
+    height: auto;
     background-image: linear-gradient( 175deg, transparent, transparent 40px, rgba(120, 120, 120, 0.1) 100px, rgba(120, 120, 120, 0.1) 110px, transparent 220px, transparent), linear-gradient( 200deg, transparent 80%, rgba(50, 50, 50, 0.3)), radial-gradient( ellipse at right bottom, transparent, transparent 200px, rgba(80, 80, 80, 0.1) 260px, rgba(80, 80, 80, 0.1) 320px, transparent 400px, transparent);
-    border: grey solid 2px;
-    content: "Bitcoin Transaction";
+    /* border: grey solid 2px; */
+    content: "";
     font-family: 'Permanent Marker', cursive;
     font-size: 1.4em;
     color: rgba(238, 238, 238, 0.7);
@@ -72,14 +71,14 @@ p:nth-of-type(10) > label {
 }
 
 input,
-.input {
+.input, ::placeholder {
     vertical-align: middle;
     padding-left: 10px;
     padding-top: 10px;
     background: none;
     border: none;
     font-family: 'Permanent Marker', cursive;
-    font-size: 1.2em;
+    font-size: 0.9em;
     color:grey;
     font-style: bold;
     line-height: .6em;
@@ -93,7 +92,7 @@ textarea {
     resize: none;
 }
 
-mat-hint, mat-error {
+.mat-hint, .mat-error {
     color: #e86f68;
 }
 

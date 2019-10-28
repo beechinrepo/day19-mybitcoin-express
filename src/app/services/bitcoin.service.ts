@@ -7,13 +7,15 @@ import { environment } from '../../environments/environment';
 })
 export class BitcoinService {
 
-  constructor(private httpSvc: HttpClient) {}
-  backendApiURL = environment.api_url;  // 'http://localhost:3000/api'
+  constructor(private httpSvc: HttpClient) { }
+  backendApiURL = environment.api_url;  // 'http://localhost:3000/api': can't work so nt using
   btcPriceApiURL = `${this.backendApiURL}/price`;
 
   public getPrice(): Promise<any> { // public: talk w backend
     return (
-      this.httpSvc.get(`${this.btcPriceApiURL}?priCurr=SGD&secCurr=BTC`).toPromise()
+      // this.httpSvc.get(`${this.btcPriceApiURL}?priCurr=SGD&secCurr=BTC`).toPromise()
+      // Checked at ARC tt backend(localhost:3000/api/price?primaryCurry=SGD) works, but can't work for frontend
+      this.httpSvc.get(`https://radiant-dawn-95135.herokuapp.com/api/price?primaryCurry=SGD`).toPromise()
     );
   }
 }

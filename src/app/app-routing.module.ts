@@ -5,7 +5,7 @@ import { ConfirmComponent } from './components/confirm.component';
 import { ListComponent } from './components/list.component';
 import { EditComponent } from './components/edit.component';
 
-const ROUTES: Routes = [
+export const ROUTES: Routes = [
   { path: '', component: ListComponent },
   { path: 'form/:orderType', component: FormComponent },
   { path: 'confirm/:orderId', component: ConfirmComponent },

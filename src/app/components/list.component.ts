@@ -9,10 +9,10 @@ import { Router } from '@angular/router';
 })
 export class ListComponent implements OnInit {
   list = [];
-  constructor(private transactSvc: TransactService, private router: Router) {}
+  constructor(private transSvc: TransactService, private router: Router) {}
 
   ngOnInit() {
-    this.transactSvc.getList().then(all => {
+    this.transSvc.getList().then(all => {
       this.list = all;
       console.log('list: ', all);
     });
@@ -20,5 +20,23 @@ export class ListComponent implements OnInit {
 
   navigateToEditOrder(orderId) {
     this.router.navigate(['/edit/' + orderId]);
+  }
+
+  reloadComponent() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['/same-route']);
+  }
+
+  deleteOrder(orderId) {
+    this.transSvc.deleteOrder(orderId).then(response => {
+      if (response != null) {
+        // this.transSvc.getList();
+        // window.location.reload();
+        this.reloadComponent();
+      } else {
+        console.log('error');
+      }
+    });
   }
 }

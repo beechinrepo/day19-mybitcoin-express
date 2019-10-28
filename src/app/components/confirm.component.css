@@ -7,11 +7,13 @@
     right: 0;
     /* background-image: linear-gradient( 150deg, rgba(0, 0, 0, 0.65), transparent); */
     font-size: 1.2em;
+
 }
 
 .blackboard {
     position: relative;
-    width: 1000px;
+    width: 95vw;
+    height: auto;
     margin: 7% auto;
     border: tan solid 12px;
     border-top: #bda27e solid 12px;
@@ -26,27 +28,31 @@
     box-sizing: border-box;
     display: block;
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 95vw;
+    height: auto;
     background-image: linear-gradient( 175deg, transparent, transparent 40px, rgba(120, 120, 120, 0.1) 100px, rgba(120, 120, 120, 0.1) 110px, transparent 220px, transparent), linear-gradient( 200deg, transparent 80%, rgba(50, 50, 50, 0.3)), radial-gradient( ellipse at right bottom, transparent, transparent 200px, rgba(80, 80, 80, 0.1) 260px, rgba(80, 80, 80, 0.1) 320px, transparent 400px, transparent);
-    border: #2c2c2c solid 2px;
+    border: grey solid 2px;
     content: "";
     font-family: 'Permanent Marker', cursive;
     font-size: 1.4em;
     color: rgba(238, 238, 238, 0.7);
     text-align: center;
-    padding-top: 20px;
+    padding-top: 10px;
+}
+
+span, mat-radio-button, mat-datepicker{
+    color: white;
 }
 
 .form {
     padding: 70px 20px 20px;
-    color: white;
 }
 
-.p {
+.p{
     position: relative;
     margin-bottom: 1em;
     width: 100%;
+    color: #e2cd6d;
 }
 
 .center{
@@ -59,22 +65,24 @@ mat-label {
     font-family: 'Permanent Marker', cursive;
     font-size: 1.6em;
     color: rgba(238, 238, 238, 0.7);
+    /* padding-bottom: 10px; */
 }
 
-
-p:nth-of-type(5) > label {
+p:nth-of-type(10) > label {
     vertical-align: top;
 }
 
 input,
-textarea {
+.input {
     vertical-align: middle;
     padding-left: 10px;
+    padding-top: 10px;
     background: none;
     border: none;
     font-family: 'Permanent Marker', cursive;
     font-size: 1.2em;
-    color: rgba(238, 238, 238, 0.8);
+    color:grey;
+    font-style: bold;
     line-height: .6em;
     outline: none;
 }
@@ -84,6 +92,10 @@ textarea {
     font-size: 1.4em;
     line-height: 1em;
     resize: none;
+}
+
+mat-hint, mat-error {
+    color: #e86f68;
 }
 
 input[type="submit"] {
@@ -109,4 +121,6 @@ input[type="submit"]:focus {
     color: rgba(238, 238, 238, 0.3);
     text-shadow: none;
 }
+
+
 
