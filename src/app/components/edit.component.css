@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .shade {
     overflow: fixed;
     position: absolute;
@@ -46,11 +45,6 @@
 span, mat-radio-button, mat-datepicker{
     color: white;
 }
-=======
-/* .radio-button {
-    margin: 5px;
-  }
->>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
 
 .form {
     padding: 70px 20px 20px;

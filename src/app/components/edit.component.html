@@ -2,13 +2,8 @@
     <div class="blackboard">
         <div class="form">
             <form [formGroup]="transactForm" (ngSubmit)="onSubmit()" method="POST" action="/orders">
-<<<<<<< HEAD
                 <h2 class="center">Edit</h2>  <!-- changed -->
             
-=======
-                <h2 class="center">Edit </h2>
-
->>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
                 <mat-form-field class="p">
                     <mat-label>Name: </mat-label>
                     <input matInput formControlName="name" placeholder="Name">
@@ -17,10 +12,6 @@
                 </mat-form-field>
                 <br>
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
                 <mat-form-field class="p">
                     <mat-label>Contact: </mat-label>
                     <input matInput placeholder="Contact No." formControlName="contact">
@@ -29,28 +20,17 @@
                     <mat-error *ngIf="transactForm.touched && !!f.contact.invalid">Please enter a valid Singapore Mobile Number</mat-error>
                 </mat-form-field>
                 <br>
-<<<<<<< HEAD
             
                 <div class="p">
                     <mat-label>Gender: </mat-label>
                     <mat-radio-group name="gender" id="gender" formControlName="gender" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="5vw"> 
-=======
-
-                <div class="p">
-                    <mat-label>Gender: </mat-label>
-                    <mat-radio-group name="gender" id="gender" formControlName="gender" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="5vw">
->>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
                         <mat-radio-button value="Male">Male</mat-radio-button>
                         <mat-radio-button value="Female">Female</mat-radio-button>
                         <mat-hint *ngIf="transactForm.touched && !!f.gender.errors?.required">Please input a Gender</mat-hint>
                     </mat-radio-group>
                 </div>
                 <br>
-<<<<<<< HEAD
             
-=======
-
->>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
                 <mat-form-field class="p">
                     <mat-label>Date of Birth: </mat-label>
                     <input matInput [matDatepicker]="dob" [max]="yearDate" placeholder="Date of Birth" formControlName="dob" touchUi="true" readonly>
@@ -63,13 +43,8 @@
 
                 <mat-form-field class="p">
                     <mat-label>Order Date: </mat-label>
-<<<<<<< HEAD
                     <input matInput [matDatepicker]="orderDate" [min]="todayDate" placeholder="Order Date" formControlName="orderDate" touchUi="true" 
                     readonly>
-=======
-                    <input matInput [matDatepicker]="orderDate" [min]="todayDate" placeholder="Order Date" formControlName="orderDate" touchUi="true"
-                        readonly>
->>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
                     <mat-datepicker-toggle matSuffix [for]="orderDate"></mat-datepicker-toggle>
                     <mat-datepicker #orderDate></mat-datepicker>
                     <mat-hint *ngIf="transactForm.touched && !!f.orderDate.errors?.required">Please input an Order Date</mat-hint>
@@ -81,24 +56,16 @@
                     <br>
                 </h2>
                 <div class="center">
-<<<<<<< HEAD
                 <mat-button-toggle-group formControlName="orderType" (change)="changeType($event)"> 
                     <mat-button-toggle value="Buy" class="submit-button" aria-label="Buy">Buy</mat-button-toggle>
                     <mat-button-toggle value="Sell" class="submit-button" aria-label="Sell">Sell</mat-button-toggle>
                 </mat-button-toggle-group>
-=======
-                    <mat-button-toggle-group formControlName="orderType" (change)="changeType($event)">
-                        <mat-button-toggle value="Buy" class="submit-button" aria-label="Buy">Buy</mat-button-toggle>
-                        <mat-button-toggle value="Sell" class="submit-button" aria-label="Sell">Sell</mat-button-toggle>
-                    </mat-button-toggle-group>
->>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
                 </div>
                 <br>
 
                 <mat-form-field class="p" appearance="fill">
                     <mat-label>Units to Transact: </mat-label>
                     <input type="number" min="1" matInput oninput="this.value = Math.abs(this.value)" placeholder="Units to Transact" (keyup)="calculatePrice($event)"
-<<<<<<< HEAD
                         formControlName="unit"> 
                     <span matSuffix>BTC&nbsp;</span>
                     <mat-hint *ngIf="transactForm.touched && !!f.unit.errors?.required">Please input number of units of Bitcoin</mat-hint>
@@ -128,37 +95,6 @@
                 <mat-form-field class="p" appearance="fill">
                     <mat-label>Total Amount: </mat-label>
                     <input class="input" matInput disabled=true value="{{ transactionAmount | number: '.2'}}"> 
-=======
-                        formControlName="unit">
-                    <span matSuffix>BTC&nbsp;</span>
-                    <mat-hint *ngIf="transactForm.touched && !!f.unit.errors?.required">Please input number of units of Bitcoin</mat-hint>
-                    <mat-error *ngIf="transactForm.touched && !!f.unit.invalid">Please input a valid number</mat-error>
-                </mat-form-field>
-                <br>
-
-                <div *ngIf="transactForm.value.orderType === 'Buy'">
-                    <mat-form-field class="p" appearance="fill">
-                        <mat-label>Buying Rate: </mat-label>
-                        <input class="input" matInput disabled=true value="{{bitcoin.ask | number: '.2'}}">
-                        <span matSuffix>&nbsp;SGD = 1 BTC</span>
-                    </mat-form-field>
-                </div>
-                <br>
-
-                <div *ngIf="transactForm.value.orderType === 'Sell'">
-                    <mat-form-field class="p" appearance="fill">
-                        <mat-label>Selling Rate: </mat-label>
-                        <input class="input" matInput disabled=true value="{{bitcoin.bid | number: '.2'}}">
-                        <span matSuffix>&nbsp;SGD = 1 BTC</span>
-                    </mat-form-field>
-                </div>
-                <br>
-
-
-                <mat-form-field class="p" appearance="fill">
-                    <mat-label>Total Amount: </mat-label>
-                    <input class="input" matInput disabled=true value="{{ transactionAmount | number: '.2'}}">
->>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
                     <span matSuffix>SGD&nbsp;</span>
                 </mat-form-field>
                 <br>
@@ -180,15 +116,9 @@
 
                 <div class="full-width" fxLayout="row" fxLayoutAlign="space-around">
                     <button type="reset" mat-raised-button class="reset-button" color="warn" (click)="cancel()">Cancel</button>
-<<<<<<< HEAD
                     <button type="submit" mat-raised-button class="submit-button" color="accent" [disabled]="transactForm.invalid">Submit Edit</button>
                 </div>
                 
-=======
-                    <button type="submit" mat-raised-button class="submit-button" color="accent" [disabled]="transactForm.invalid">Make Transaction</button>
-                </div>
-
->>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
             </form>
         </div>
     </div>

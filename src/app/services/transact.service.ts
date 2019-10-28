@@ -16,13 +16,8 @@ export class TransactService {
   public saveCurrentTransaction(tran: Order) {
 
     this.currentTransaction = tran;
-<<<<<<< HEAD
     return this.httpSvc.post<any>(this.btcApiURL, this.currentTransaction).toPromise();
     // can't put here - .then (() => {
-=======
-    return this.httpSvc.post<any>(this.btcApiURL, this.currentTransaction).toPromise()
-    // .then (() => {
->>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
     //   console.log('frontend service sending current transaction: ', this.currentTransaction);
     // });
   }
