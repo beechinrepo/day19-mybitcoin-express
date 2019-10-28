@@ -4,13 +4,14 @@ const express = require('express'),
       cors = require('cors'),
       path = require('path'),
       uuidv1 = require('uuid/v1');
+      qs = require('querystring');
 const app = express();
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cors());
 
 const APP_PORT = process.env.PORT;
 const API_URL = '/api';
-// const API_URL = 'https://radiant-dawn-95135.herokuapp.com/api'
+// const API_URL = 'https://radiant-dawn-95135.herokuapp.com/api';
 const list = [];
 
 app.post(`${API_URL}/bitcoin`, (req, res) => {
@@ -92,12 +93,13 @@ app.put(`${API_URL}/bitcoin`, (req, res) => { // query:sort/filter; param:id spe
     };
 });
 
-app.get(`${API_URL}/price`, (req, res) => {
-    let priCurr = req.query.priCurr; //SGD
-    let secCurr = req.query.secCurr; //BTC
-    const PRICE_API_URL = process.env.PRICE_API_URL;
+app.get(`${API_URL}/price`, (req, res) => { // localhost:3000/api/price
+    let priCurr = req.query.primaryCurry; //SGD
+    let secCurr = req.query.secondaryCurry; //BTC
+    const PRICE_API_URL = process.env.PRICE_API_URL; // https://apiv2.bitcoinaverage.com/indices/global/ticker/all?crypto=BTC&fiat=SGD
     const options = {
-        url: `${PRICE_API_URL}${"SGD"},${"BTC"}`,
+        // url: 'https://apiv2.bitcoinaverage.com/indices/global/ticker/all' + '?' + qs.stringify({crypto: 'BTC', fiat: 'SGD'}),
+        url: `${PRICE_API_URL}${priCurr},${secCurr}`,
         headers: {
             'Accept': 'application/json',
             'X-testing': 'testing'
