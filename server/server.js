@@ -1,16 +1,9 @@
 require('dotenv').config(); // loads envt vars from .env file into process.env. 
 const express = require('express'),
-<<<<<<< HEAD
       bodyParser = require('body-parser'),
       cors = require('cors'),
       path = require('path'),
       uuidv1 = require('uuid/v1');
-=======
-    bodyParser = require('body-parser'),
-    cors = require('cors'),
-    path = require('path');
-uuidv1 = require('uuid/v1');
->>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
 const app = express();
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cors());
