@@ -97,13 +97,13 @@ export class EditComponent implements OnInit {
     this.transactionAmount = $event.target.value * this.rate;
   }
 
-  // changeType() {
-  //   if (this.transactForm.value.orderType === 'Sell') {
-  //     this.transactForm.get('btcAddress').setValidators(null);
-  //     this.transactForm.get('btcAddress').setErrors(null);
-  //     console.log('changed ordertype');
-  //   }
-  // }
+  changeType() {
+    if (this.transactForm.value.orderType === 'Sell') {
+      this.transactForm.get('btcAddress').setValidators(null);
+      this.transactForm.get('btcAddress').setErrors(null);
+      console.log('changed ordertype');
+    }
+  }
 
   cancel() {
     this.router.navigate(['']);
