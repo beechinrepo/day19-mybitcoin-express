@@ -28,18 +28,14 @@ export class FormComponent implements OnInit {
   rate = 0;
   transactionAmount = 0;
   bitcoin = { ask: 0, bid: 0 };
-<<<<<<< HEAD
   selectedOrderId = ''; // added
-=======
-
->>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
   todayDate = new Date(); // Tue Oct 15 2019 15:47:39 GMT+0800 (Singapore Standard Time)
   yearDate = new Date();
-  selectedOrderId = "";
+
   constructor(private btcSvc: BitcoinService,
-    private transSvc: TransactService,
-    private router: Router,
-    private route: ActivatedRoute) {
+              private transSvc: TransactService,
+              private router: Router,
+              private route: ActivatedRoute) {
     this.transactForm = this.createFormGroup();
   }
   ngOnInit() {
@@ -71,7 +67,7 @@ export class FormComponent implements OnInit {
      return new FormGroup({
     // transactForm: FormGroup = new FormGroup({
     //  changed all from '' to e.g. model.name
-    name: new FormControl(this.model.name, [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+')]), 
+    name: new FormControl(this.model.name, [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+')]),
     contact: new FormControl(this.model.contact, [Validators.required, Validators.pattern('^[8-9][0-9]{7}$')]),
     gender: new FormControl(this.model.gender, [Validators.required]),
     dob: new FormControl(this.model.dob, [Validators.required]),
