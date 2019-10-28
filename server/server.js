@@ -1,9 +1,16 @@
 require('dotenv').config(); // loads envt vars from .env file into process.env. 
 const express = require('express'),
+<<<<<<< HEAD
       bodyParser = require('body-parser'),
       cors = require('cors'),
       path = require('path'),
       uuidv1 = require('uuid/v1');
+=======
+    bodyParser = require('body-parser'),
+    cors = require('cors'),
+    path = require('path');
+uuidv1 = require('uuid/v1');
+>>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
 const app = express();
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cors());
@@ -31,11 +38,15 @@ app.get(`${API_URL}/btc`, (req, res) => {
     list.forEach((item) => {
         if (item) {
             returnResult.push(item);
-        }  
+        }
     });
     res.status(200).json(returnResult);
     // console.log('Getting all transactions: ', returnResult);
+<<<<<<< HEAD
   });
+=======
+});
+>>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
 
 app.get(`${API_URL}/btc/:orderId`, (req, res) => {
     let orderId = req.params.orderId;
@@ -51,6 +62,7 @@ app.get(`${API_URL}/btc/:orderId`, (req, res) => {
     }
 });
 
+<<<<<<< HEAD
 app.delete(`${API_URL}/btc/:orderId`, (req, res) => {
     const orderId = req.params.orderId;
     let index = list.findIndex(order => order.id === orderId);
@@ -62,6 +74,8 @@ app.delete(`${API_URL}/btc/:orderId`, (req, res) => {
     }
 });
 
+=======
+>>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
 app.put(`${API_URL}/btc`, (req, res) => { // query:sort/filter; param:id specific resource(s)
     let orderId = req.query.orderId;
     let order = req.body;

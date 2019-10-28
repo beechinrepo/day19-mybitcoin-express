@@ -28,16 +28,24 @@ export class FormComponent implements OnInit {
   rate = 0;
   transactionAmount = 0;
   bitcoin = { ask: 0, bid: 0 };
+<<<<<<< HEAD
   selectedOrderId = ''; // added
+=======
+
+>>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
   todayDate = new Date(); // Tue Oct 15 2019 15:47:39 GMT+0800 (Singapore Standard Time)
   yearDate = new Date();
-
+  selectedOrderId = "";
   constructor(private btcSvc: BitcoinService,
-              private transSvc: TransactService,
-              private router: Router,
-              private route: ActivatedRoute) {
+    private transSvc: TransactService,
+    private router: Router,
+    private route: ActivatedRoute) {
     this.transactForm = this.createFormGroup();
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
   ngOnInit() {
     this.model.orderType = this.route.snapshot.paramMap.get('orderType');  // i edited
     console.log(this.model.orderType);
@@ -51,12 +59,21 @@ export class FormComponent implements OnInit {
     this.yearDate.setFullYear(this.todayDate.getFullYear() - 21);
 
     this.btcSvc.getPrice()
+<<<<<<< HEAD
     .then((result) => {
       console.log(result, 'result');
       this.bitcoin = result.BTCSGD; // added .BTCSGD
     })
     .catch(error => {
       console.log(error);
+=======
+      .then((result) => {
+        console.log(result, "result");
+        this.bitcoin = result.BTCSGD;
+      })
+      .catch(error => {
+        console.log(error);
+>>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
       });
   }
 
@@ -64,6 +81,7 @@ export class FormComponent implements OnInit {
   get f() { return this.transactForm.controls; }
 
   createFormGroup() {
+<<<<<<< HEAD
      return new FormGroup({
     // transactForm: FormGroup = new FormGroup({
     //  changed all from '' to e.g. model.name
@@ -87,6 +105,36 @@ export class FormComponent implements OnInit {
     console.log(this.rate, 'rate');
     this.transactionAmount = $event.target.value * this.rate;
     console.log(this.transactionAmount, 'amt'); // added
+=======
+    return new FormGroup({
+      // transactForm: FormGroup = new FormGroup({
+      name: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+')]),
+      contact: new FormControl('', [Validators.required, Validators.pattern('^[8-9][0-9]{7}$')]),
+      gender: new FormControl('', [Validators.required]),
+      dob: new FormControl('', [Validators.required]),
+      orderDate: new FormControl('', [Validators.required]),
+      orderType: new FormControl('Buy', [Validators.required]),
+      unit: new FormControl('', [Validators.required]),  // *:multiple occurence of preceding. $:end. ^:bgn. Validators.pattern('^[0-9]*$'
+      btcAddress: new FormControl('', [Validators.required]),
+      // email: new FormControl('', [Validators.required, Validators.email]),
+    })
+  }
+
+  calculatePrice($event) {
+    console.log(this.bitcoin.ask, "this.bitcoin.ask")
+    this.rate = (this.transactForm.value.orderType === 'Buy') ? this.bitcoin.ask : this.bitcoin.bid;
+    console.log(this.rate, "rate");
+    this.transactionAmount = $event.target.value * this.rate;
+    console.log(this.transactionAmount, "am")
+  }
+
+  changeType(e) {
+    if (this.transactForm.value.orderType === 'Sell') {
+      this.transactForm.get('btcAddress').setValidators(null);
+      this.transactForm.get('btcAddress').setErrors(null);
+      console.log('changed ordertype');
+    }
+>>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
   }
 
   cancel() {
@@ -107,6 +155,7 @@ export class FormComponent implements OnInit {
       rate: this.rate,
       total: this.transactionAmount
     };
+<<<<<<< HEAD
     // added- .then: for void type must acct for null
     // response.id: can't put .then at srvs, nd to wait for promise to return from srvs then handle response from here
     this.transSvc.saveCurrentTransaction(save).then(response => {
@@ -123,5 +172,16 @@ export class FormComponent implements OnInit {
     // // .then(result => {
     // //   console.log(result);
     // this.router.navigate(['/confirm']);
+=======
+    this.transSvc.saveCurrentTransaction(save).then(response => {
+      if (response != null) {
+        this.router.navigate(['/confirm/' + response.id]);
+      } else {
+        console.log("errror");
+      }
+
+    });
+
+>>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
   }
 }

@@ -1,10 +1,10 @@
-
 <div class="shade">
     <div class="blackboard">
         <div class="form">
             <h2>Your {{confirmData.orderType}} order has been confirmed</h2>
             <div class="p">
                 <table>
+<<<<<<< HEAD
                 <tbody>
                     <tr>
                         <td>Name:</td>
@@ -47,6 +47,50 @@
                         <td class="info">SGD {{ confirmData.total | number: '.2' }}</td>
                     </tr>
                 </tbody>
+=======
+                    <tbody>
+                        <tr>
+                            <td>Name:</td>
+                            <td class="info">{{confirmData.name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Contact No.:</td>
+                            <td class="info">+65-{{confirmData.contact}}</td>
+                        </tr>
+                        <tr>
+                            <td>Gender:</td>
+                            <td class="info">{{ confirmData.gender }}</td>
+                        </tr>
+                        <tr>
+                            <td>Date of Birth:</td>
+                            <td class="info">{{ confirmData.dob | date }}</td>
+                        </tr>
+                        <tr>
+                            <td>Order Date:</td>
+                            <td class="info">{{ confirmData.orderDate | date }}</td>
+                        </tr>
+                        <tr>
+                            <td>Order Type:</td>
+                            <td class="info">{{ confirmData.orderType }}</td>
+                        </tr>
+                        <tr>
+                            <td>Units {{(confirmData.orderType === 'Buy' ? 'Bought' : 'Sold')}}:</td>
+                            <td class="info">BTC {{ confirmData.unit }}</td>
+                        </tr>
+                        <tr *ngIf="confirmData.orderType==='Buy'">
+                            <td>Bitcoin Address:</td>
+                            <td class="info">{{ confirmData.btcAddress }}</td>
+                        </tr>
+                        <tr>
+                            <td>Rate:</td>
+                            <td class="info">SGD {{ confirmData.rate | number: '.2'}} = 1 BTC</td>
+                        </tr>
+                        <tr>
+                            <td>Total:</td>
+                            <td class="info">SGD {{ confirmData.total | number: '.2' }}</td>
+                        </tr>
+                    </tbody>
+>>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
                 </table>
             </div>
             <br>
@@ -55,9 +99,15 @@
             <div class="p center" *ngIf="confirmData.orderType ==='Buy'">
                 <h4>Please wire the funds to the below PayNow Code.
                     <br> Once the SGD funds are received we will send the Bitcoin to your Wallet Address!</h4>
+<<<<<<< HEAD
             <div class="center">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Cochlear_Baha_App_QR_code.jpg" width="150px">
             </div>
+=======
+                <div class="center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Cochlear_Baha_App_QR_code.jpg" width="150px">
+                </div>
+>>>>>>> 300604651fb1f454def9fa1fe7e2d833fd57c6cc
             </div>
             <div *ngIf="confirmData.orderType ==='Sell'">
                 <h4>Please wire the Bitcoin to the below Wallet Address.
@@ -71,4 +121,3 @@
         </div>
     </div>
 </div>
-    
